@@ -1,1 +1,9 @@
-<header> This a header from header file</header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?php wp_head() ?>
+</head>
+<body>
+    <header>Fictional University</header>
+</body>
+</html>
