@@ -5,5 +5,3 @@
 </head>
 <body>
     <header>Fictional University</header>
-</body>
-</html>
