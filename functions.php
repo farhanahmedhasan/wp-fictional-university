@@ -13,5 +13,6 @@ function loadUniversityResources(){
 }
 
 function loadUniversityFeatures(){
+    register_nav_menu('header_menu', 'Header Menu Location');
     add_theme_support('title-tag');
 }
