@@ -44,8 +44,8 @@
     <?php } ?>
 
     <!-- Pagination -->
-     <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
-     <?php echo paginate_links() ?>
+    <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
+    <?php echo paginate_links() ?>
 </div>
 
 <?php get_footer() ?>
