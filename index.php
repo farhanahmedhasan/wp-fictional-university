@@ -11,6 +11,7 @@
 </div>
 
 <div class="container container--narrow page-section">
+    <!-- Posts -->
     <?php
         while(have_posts()){
             the_post(); 
@@ -41,6 +42,10 @@
         </div>
     </div>
     <?php } ?>
+
+    <!-- Pagination -->
+     <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
+     <?php echo paginate_links() ?>
 </div>
 
 <?php get_footer() ?>
