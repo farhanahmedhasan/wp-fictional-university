@@ -44,7 +44,7 @@
     <?php } ?>
 
     <!-- Pagination -->
-    <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
+     <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
     <?php echo paginate_links() ?>
 </div>
 
