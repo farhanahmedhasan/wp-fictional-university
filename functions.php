@@ -18,3 +18,23 @@ function loadUniversityFeatures(){
     register_nav_menu('footer_menu_two', 'Footer Menu Two Location');
     add_theme_support('title-tag');
 }
+
+// Custom Post Types (Keeping a reference from mu-plugins)
+add_action('init', 'loadUniversityPostTypes');
+
+function loadUniversityPostTypes(){
+    $labels = [
+        'name'=> 'Events',
+        'singular_name' => 'Event',
+        'all_items' => 'All Events',
+        'add_new_item' => 'Add New Event',
+        'edit_item' => 'Edit Event',
+    ];
+
+    register_post_type('event', [
+        'public' => true,
+        'labels' => $labels,
+        'menu_icon' => 'dashicons-calendar',
+        'rewrite' => ['slug' => 'event', 'with_front' => false],
+    ]);
+}
