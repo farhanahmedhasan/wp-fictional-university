@@ -2,7 +2,6 @@
 
 add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
-add_action('init', 'loadUniversityPostTypes');
 
 function loadUniversityResources(){
     wp_enqueue_style('university_normalized_css', get_theme_file_uri( '/build/index.css' ));
@@ -18,20 +17,4 @@ function loadUniversityFeatures(){
     register_nav_menu('footer_menu_one', 'Footer Menu One Location');
     register_nav_menu('footer_menu_two', 'Footer Menu Two Location');
     add_theme_support('title-tag');
-}
-
-function loadUniversityPostTypes(){
-    $labels = [
-        'name'=> 'Events',
-        'singular_name' => 'Event',
-        'all_items' => 'All Events',
-        'add_new_item' => 'Add New Event',
-    ];
-
-    register_post_type('event', [
-        'public' => true,
-        'labels' => $labels,
-        'menu_icon' => 'dashicons-calendar',
-        'rewrite' => ['slug' => 'event', 'with_front' => false],
-    ]);
 }
