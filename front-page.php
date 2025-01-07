@@ -35,12 +35,17 @@
                     <a href="<?php the_permalink() ?>"><?php the_title() ?></a>
                   </h5>
                   <p>
-                    <?php echo wp_trim_words(get_the_content(), 18) ?>
+                    <?php
+                      $excerpt = has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 18);
+                      echo $excerpt;
+                    ?>
                     <a href="<?php the_permalink() ?>" class="nu gray">Learn more</a>
                   </p>
                 </div>
               </div>
-            <?php } ?>
+            <?php } 
+              wp_reset_postdata();
+            ?>
           
 
           <p class="t-center no-margin"><a href="<?php echo get_post_type_archive_link('event') ?>" class="btn btn--blue">View All Events</a></p>
