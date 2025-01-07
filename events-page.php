@@ -26,29 +26,21 @@
         while($events->have_posts()){
             $events->the_post(); 
     ?>
-    <div class="post-item">
-        <h2 class="headline headline--medium headline--post-title">
-            <a href="<?php the_permalink() ?>">
-                <?php the_title() ?>
-            </a>
-        </h2>
-        <div class="metabox">
-            <p>
-                Posted by 
-                <?php the_author_posts_link()?> 
-                on 
-                <?php the_modified_date()?> 
-                at 
-                <?php the_modified_date( 'g:i a' ) ?>
-            </p>
-        </div>
-        <div class="generic-content">
-            <p><?php the_excerpt() ?></p>
-            <p>
-                <a class="btn btn--blue" href="<?php the_permalink() ?>">Continue Reading &raquo;</a>
-            </p>
-        </div>
-    </div>
+            <div class="event-summary">
+                <a class="event-summary__date t-center" href="#">
+                  <span class="event-summary__month"><?php the_time('M') ?></span>
+                  <span class="event-summary__day"><?php the_time('j') ?></span>
+                </a>
+                <div class="event-summary__content">
+                  <h5 class="event-summary__title headline headline--tiny">
+                    <a href="<?php the_permalink() ?>"><?php the_title() ?></a>
+                  </h5>
+                  <p>
+                    <?php the_excerpt() ?>
+                    <a href="<?php the_permalink() ?>" class="nu gray">Learn more</a>
+                  </p>
+                </div>
+            </div>
     <?php } ?>
 
     <!-- Pagination -->
