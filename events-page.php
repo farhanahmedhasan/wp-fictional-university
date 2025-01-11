@@ -1,6 +1,6 @@
 <?php
     /*
-    Template Name: Events
+    Template Name: Event
     */
     get_header(); 
 ?>
