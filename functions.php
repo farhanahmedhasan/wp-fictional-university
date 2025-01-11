@@ -37,6 +37,7 @@ function getEventQuery($posts_per_page = 4){
           'key' => 'event_date',
           'compare' => '>=',
           'value' => Date('Y-m-d'),
-        ]
+        ],
+        'paged' => get_query_var('paged') ? get_query_var('paged') : 1
     ]);
 }

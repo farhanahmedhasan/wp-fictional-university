@@ -42,8 +42,13 @@
     <?php } ?>
 
     <!-- Pagination -->
-     <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
-    <?php echo paginate_links() ?>
+    <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
+    <?php 
+        echo paginate_links([
+            'current' => max(1, get_query_var('paged')),
+            'total' => $query->max_num_pages,
+        ]);
+    ?>
 </div>
 
 <?php get_footer() ?>
