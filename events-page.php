@@ -16,11 +16,19 @@
 </div>
 
 <div class="container container--narrow page-section">
-    <!-- Posts -->
+    <!-- Event Posts -->
     <?php
         $events = new WP_Query([
             'post_type' => 'event',
             'posts_per_page' => 8,
+            'meta_key' => 'event_date',
+            'orderby' => 'meta_value',
+            'order' => 'ASC',
+            'meta_query' => [
+              'key' => 'event_date',
+              'compare' => '>=',
+              'value' => Date('Y-m-d'),
+            ]
         ]);
 
         while($events->have_posts()){
