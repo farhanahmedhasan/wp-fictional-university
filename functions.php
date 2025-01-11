@@ -2,6 +2,7 @@
 
 add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
+add_action('pre_get_posts', 'adjustQueries');
 
 function loadUniversityResources(){
     wp_enqueue_style('university_normalized_css', get_theme_file_uri( '/build/index.css' ));
@@ -17,4 +18,25 @@ function loadUniversityFeatures(){
     register_nav_menu('footer_menu_one', 'Footer Menu One Location');
     register_nav_menu('footer_menu_two', 'Footer Menu Two Location');
     add_theme_support('title-tag');
+}
+
+function adjustQueries($query){
+    if(!is_admin() && $query->is_main_query()){
+        $query->set('posts_per_page', 4);
+    }
+}
+
+function getEventQuery($posts_per_page = 4){
+    return new WP_Query([
+        'post_type' => 'event',
+        'posts_per_page' => $posts_per_page,
+        'meta_key' => 'event_date',
+        'orderby' => 'meta_value',
+        'order' => 'ASC',
+        'meta_query' => [
+          'key' => 'event_date',
+          'compare' => '>=',
+          'value' => Date('Y-m-d'),
+        ]
+    ]);
 }

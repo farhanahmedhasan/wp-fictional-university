@@ -17,21 +17,10 @@
 
           <!-- Show Custom WP Queried Events -->
           <?php 
-            $events = new WP_Query([
-              'post_type' => 'event',
-              'posts_per_page' => 2,
-              'meta_key' => 'event_date',
-              'orderby' => 'meta_value',
-              'order' => 'ASC',
-              'meta_query' => [
-                'key' => 'event_date',
-                'compare' => '>=',
-                'value' => Date('Y-m-d'),
-              ]
-            ]);
+            $query = getEventQuery(2);
 
-            while($events->have_posts()){
-              $events->the_post();
+            while($query->have_posts()){
+              $query->the_post();
               $event_date = new DateTime(get_field('event_date'));
             ?>
               <div class="event-summary">
