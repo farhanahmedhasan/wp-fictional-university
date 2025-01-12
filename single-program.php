@@ -5,7 +5,7 @@
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title"><?php the_title() ?></h1>
         <div class="page-banner__intro">
-          <p>Don't forget to replace me later</p>
+          <p>Master in Biology</p>
         </div>
     </div>
 </div>
@@ -15,17 +15,12 @@
              the_post(); 
         ?>
         <p>
-          <a class="metabox__blog-home-link" href=<?php echo get_post_type_archive_link('events') ?>>
+          <a class="metabox__blog-home-link" href=<?php echo site_url('/programs') ?>>
             <i class="fa fa-home" aria-hidden="true"></i>
-                Events Home
+                All Programs
             </a> 
             <span class="metabox__main">
-                Posted by 
-                <?php echo the_author_posts_link()?> 
-                on 
-                <?php the_modified_date()?> 
-                at 
-                <?php the_modified_date( 'g:i a' ) ?> 
+                <?php the_title() ?>
             </span>
         </p>
         <?php } ?>
