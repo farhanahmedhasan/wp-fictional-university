@@ -18,7 +18,7 @@
           <!-- Show Custom WP Queried Events -->
           <?php 
             $events_page_id = 90;
-            $query = getEventQuery(2);
+            $query = getEventQuery(['posts_per_page' => 2]);
 
             while($query->have_posts()){
               $query->the_post();
