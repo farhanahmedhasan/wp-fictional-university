@@ -17,6 +17,7 @@
 
           <!-- Show Custom WP Queried Events -->
           <?php 
+            $events_page_id = 90;
             $query = getEventQuery(2);
 
             while($query->have_posts()){
@@ -46,7 +47,7 @@
             ?>
 
           <p class="t-center no-margin">
-            <a href="<?php echo site_url('event') ?>" class="btn btn--blue">View All Events</a></p>
+            <a href="<?php echo get_permalink($events_page_id) ?>" class="btn btn--blue">View All Events</a></p>
 
         </div>
       </div>
