@@ -26,18 +26,33 @@ function adjustQueries($query){
     }
 }
 
-function getEventQuery($posts_per_page = 4){
+function getEventQuery($args = []){
+    $defaults = [
+        'posts_per_page' => 4,
+        'key' => 'event_date',
+        'query_operator' => '>=',
+        'show_all' => false
+    ];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $meta_query = [
+        'key' => $args['key'],
+        'compare' => $args['query_operator'],
+        'value' => Date('Y-m-d'),
+    ];
+
+    if($args['show_all']){
+        $meta_query = [];
+    }
+
     return new WP_Query([
         'post_type' => 'event',
-        'posts_per_page' => $posts_per_page,
-        'meta_key' => 'event_date',
+        'posts_per_page' => $args['posts_per_page'],
+        'meta_key' => $args['key'],
         'orderby' => 'meta_value',
         'order' => 'ASC',
-        'meta_query' => [
-          'key' => 'event_date',
-          'compare' => '>=',
-          'value' => Date('Y-m-d'),
-        ],
+        'meta_query' => $meta_query,
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1
     ]);
 }
