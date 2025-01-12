@@ -14,12 +14,7 @@
     <!-- Posts -->
     <ul class="link-list min-list">
         <?php
-            $query = new WP_Query([
-                'post_type' => 'program',
-                'posts_per_page' => -1,
-                'orderby' => 'title',
-                'order' => 'ASC',
-            ]);
+            $query = getProgramQuery();
 
             while($query->have_posts()){
                 $query->the_post(); 

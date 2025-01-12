@@ -56,3 +56,12 @@ function getEventQuery($args = []){
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1
     ]);
 }
+
+function getProgramQuery(){
+    return new WP_Query([
+        'post_type' => 'program',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ]);
+}
