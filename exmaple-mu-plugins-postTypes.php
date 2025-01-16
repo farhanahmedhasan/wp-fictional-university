@@ -27,7 +27,7 @@ function loadUniversityPostTypes(){
     // Professor Post Type
     register_post_type('professor', [
         'show_in_rest' => true,
-        'supports' => ['title', 'editor'],
+        'supports' => ['title', 'editor', 'thumbnail'],
         'labels' => getLabels('Professors'),
         'public' => true,
         'menu_icon' => 'dashicons-welcome-learn-more',

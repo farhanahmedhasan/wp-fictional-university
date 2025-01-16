@@ -18,6 +18,7 @@ function loadUniversityFeatures(){
     register_nav_menu('footer_menu_one', 'Footer Menu One Location');
     register_nav_menu('footer_menu_two', 'Footer Menu Two Location');
     add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
 }
 
 function adjustQueries($query){
