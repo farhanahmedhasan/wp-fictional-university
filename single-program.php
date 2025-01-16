@@ -30,10 +30,43 @@
         <?php the_content() ?>
     </div>
 
+	<!-- Professors lists that are related to this program -->
+	<?php 
+		$relatedProfessors = new WP_Query([
+			'posts_per_page' => -1,
+			'post_type' => 'professor',
+			'orderBy' => 'title',
+			'order' => 'ASC',
+			'meta_query' => [
+				[
+					'key' => 'related_programs',
+					'compare' => 'LIKE',
+					'value' => '"' . get_the_ID() . '"'
+				]
+			]
+		]);
+
+		if($relatedProfessors->have_posts()){
+			echo '<hr class="section-break">';
+			echo '<h2 class="headline headline--medium">' . get_the_title() . ' Professors</h2>';
+
+			while ($relatedProfessors->have_posts()) {
+				$relatedProfessors->the_post();
+			?>
+				<li><a href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
+				
+		<?php	}
+		} wp_reset_postdata();
+	?>
+
+
+	<!-- Up coming events lists that are related to this program -->
     <?php 
         $relatedEvents = new WP_Query([
             'posts_per_page' => -1,
             'post_type' => 'event',
+			'orderBy' => 'meta_value',
+			'order' => 'ASC',
             'meta_query' => [
                 [
                     'key' => 'event_date',
