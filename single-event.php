@@ -8,7 +8,7 @@
              the_post(); 
         ?>
         <p>
-          <a class="metabox__blog-home-link" href=<?php echo get_post_type_archive_link('events') ?>>
+          <a class="metabox__blog-home-link" href=<?php echo site_url('/events') ?>>
             <i class="fa fa-home" aria-hidden="true"></i>
                 Events Home
             </a> 
