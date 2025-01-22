@@ -11,6 +11,10 @@ function addCustomPostTypeBodyClass($classes){
         $classes[] = 'page-campuses';
     }
 
+    if (is_singular('campus')){
+        $classes[] = 'single-campus';
+    }
+
     return $classes;
 }
 

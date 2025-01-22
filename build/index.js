@@ -139,7 +139,8 @@ class OpenStreetMap {
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.body.classList.contains('page-campuses')) {
+  const hasMap = document.body.classList.contains('page-campuses') || document.body.classList.contains('single-campus');
+  if (hasMap) {
     const openStreetMap = new OpenStreetMap("acf-map");
     openStreetMap.init();
     openStreetMap.addMarkers();
