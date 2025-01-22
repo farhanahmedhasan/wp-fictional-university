@@ -132,7 +132,7 @@ class OpenStreetMap {
       const lat = parseFloat(markerDiv.getAttribute("data-lat"));
       const lng = parseFloat(markerDiv.getAttribute("data-lng"));
       const marker = L.marker([lat, lng]).addTo(this.map);
-      const popupContent = markerDiv.innerText || "Campus Location";
+      const popupContent = markerDiv.innerHTML || "Campus Location";
       marker.bindPopup(popupContent);
       this.bounds.push([lat, lng]);
     });

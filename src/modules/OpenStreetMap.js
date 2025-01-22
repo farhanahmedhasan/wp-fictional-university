@@ -37,7 +37,7 @@ class OpenStreetMap {
 
             const marker = L.marker([lat, lng]).addTo(this.map);
 
-            const popupContent = markerDiv.innerText || "Campus Location";
+            const popupContent = markerDiv.innerHTML || "Campus Location";
             marker.bindPopup(popupContent);
 
             this.bounds.push([lat, lng]);

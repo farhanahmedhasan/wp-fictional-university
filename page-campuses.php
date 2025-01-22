@@ -19,9 +19,11 @@
             ?>
             <div class="marker" data-lat="<?php echo $campusLocation['lat'] ?>" data-lng="<?php echo $campusLocation['lng'] ?>">
                 <h3>
-                    <?php the_title() ?>
+                    <a href="<?php the_permalink() ?>">
+                        <?php the_title() ?>
+                    </a>
                 </h3>
-                <p><?php echo $campusLocation['address'] ?></p>
+                <p style="margin-top: 8px"><?php echo $campusLocation['address'] ?></p>
             </div>
         <?php } ?>
     </div>
