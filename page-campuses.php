@@ -17,10 +17,14 @@
             $query->the_post();
             $campusLocation = get_field('campus_location');
             ?>
-            <div class="marker" data-lat="<?php echo $campusLocation['lat'] ?>" data-lng="<?php echo $campusLocation['lng'] ?>"></div>
+            <div class="marker" data-lat="<?php echo $campusLocation['lat'] ?>" data-lng="<?php echo $campusLocation['lng'] ?>">
+                <h3>
+                    <?php the_title() ?>
+                </h3>
+                <p><?php echo $campusLocation['address'] ?></p>
+            </div>
         <?php } ?>
     </div>
-
 
     <!-- Pagination -->
     <!-- TODO: Change pagination query style /?page=1 not /page/1/  -->
