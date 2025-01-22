@@ -33,10 +33,20 @@ function loadUniversityPostTypes(){
         'menu_icon' => 'dashicons-welcome-learn-more',
         'rewrite' => ['with_front' => false],
     ]);
+
+    // Campus post type
+    register_post_type('campus', [
+        'show_in_rest' => true,
+        'supports' => ['title', 'editor'],
+        'public' => true,
+        'labels'=> getLabels('Campuses'),
+        'menu_icon' => 'dashicons-location-alt',
+        'rewrite' => ['with_front' => false],
+    ]);
 }
 
 function getLabels($pluralName){
-    $singularName = substr($pluralName, 0, -1);
+    $singularName = substr($pluralName, -2) === 'es' ? substr($pluralName, 0, -2) : substr($pluralName, 0, -1);
     return [
         'name' => $pluralName,
         'singular_name' => $singularName,
