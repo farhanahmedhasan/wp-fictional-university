@@ -151,11 +151,13 @@ class OpenStreetMap {
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
-  const openStreetMap = new OpenStreetMap("acf-map");
-  openStreetMap.init();
+  if (document.body.classList.contains('page-campuses')) {
+    const openStreetMap = new OpenStreetMap("acf-map");
+    openStreetMap.init();
 
-  // Add markers from the HTML structure
-  openStreetMap.addMarkers();
+    // Add markers from the HTML structure
+    openStreetMap.addMarkers();
+  }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OpenStreetMap);
 

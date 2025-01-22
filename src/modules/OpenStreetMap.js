@@ -52,11 +52,13 @@ class OpenStreetMap {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const openStreetMap = new OpenStreetMap("acf-map")
-    openStreetMap.init();
+    if (document.body.classList.contains('page-campuses')){
+        const openStreetMap = new OpenStreetMap("acf-map")
+        openStreetMap.init();
 
-    // Add markers from the HTML structure
-    openStreetMap.addMarkers();
+        // Add markers from the HTML structure
+        openStreetMap.addMarkers();
+    }
 });
 
 export default OpenStreetMap

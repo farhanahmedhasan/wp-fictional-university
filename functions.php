@@ -4,6 +4,16 @@ add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
 add_action('pre_get_posts', 'adjustQueries');
 
+add_filter('body_class', 'addCustomPostTypeBodyClass');
+
+function addCustomPostTypeBodyClass($classes){
+    if (is_page('campuses')) {
+        $classes[] = 'page-campuses';
+    }
+
+    return $classes;
+}
+
 function loadUniversityResources(){
     wp_enqueue_style('university_normalized_css', get_theme_file_uri( '/build/index.css' ));
     wp_enqueue_style('university_main_css', get_theme_file_uri( '/build/style-index.css' ));
