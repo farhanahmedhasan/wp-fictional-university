@@ -5,7 +5,7 @@
 
 <div class="container container--narrow page-section">
     <!-- Campuses -->
-    <div class="acf-map">
+    <div class="acf-map" id="acf-map">
         <?php
         $query = new WP_Query([
                 'posts_per_page' => -1,
@@ -15,12 +15,9 @@
 
         while($query->have_posts()){
             $query->the_post();
-
             $campusLocation = get_field('campus_location');
-            $lat = $lng = $campusLocation['lat'];
-            $lng = $campusLocation['lng']
             ?>
-            <div class="marker" data-lat="<?php echo $lat ?>" data-lng="<?php echo $lng ?>"></div>
+            <div class="marker" data-lat="<?php echo $campusLocation['lat'] ?>" data-lng="<?php echo $campusLocation['lng'] ?>"></div>
         <?php } ?>
     </div>
 
