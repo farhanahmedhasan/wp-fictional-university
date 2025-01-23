@@ -10,13 +10,16 @@ class Search{
     }
 
     onTogglSearch() {
-        this.searchTrigger.addEventListener('click', ()=> {
-            this.ref.classList.add('search-overlay--active')
-        })
+        this.searchTrigger.addEventListener('click', this.openOverlay)
+        this.closeTrigger.addEventListener('click', this.closeOverlay)
+    }
 
-        this.closeTrigger.addEventListener('click', ()=> {
-            this.ref.classList.remove('search-overlay--active')
-        })
+    openOverlay = () => {
+        this.ref.classList.add('search-overlay--active')
+    }
+
+    closeOverlay = ()=> {
+        this.ref.classList.remove('search-overlay--active')
     }
 }
 

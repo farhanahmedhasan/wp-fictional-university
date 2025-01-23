@@ -174,13 +174,15 @@ class Search {
     this.ref = document.getElementById(refId);
   }
   onTogglSearch() {
-    this.searchTrigger.addEventListener('click', () => {
-      this.ref.classList.add('search-overlay--active');
-    });
-    this.closeTrigger.addEventListener('click', () => {
-      this.ref.classList.remove('search-overlay--active');
-    });
+    this.searchTrigger.addEventListener('click', this.openOverlay);
+    this.closeTrigger.addEventListener('click', this.closeOverlay);
   }
+  openOverlay = () => {
+    this.ref.classList.add('search-overlay--active');
+  };
+  closeOverlay = () => {
+    this.ref.classList.remove('search-overlay--active');
+  };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
 
