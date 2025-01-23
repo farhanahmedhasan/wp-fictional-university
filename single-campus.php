@@ -2,6 +2,20 @@
 
 <?php get_template_part('template-parts/banner') ?>
 
+<?php
+    $relatedPrograms = new WP_Query([
+        'posts_per_page' => -1,
+        'post_type' => 'program',
+        'meta_query' => [
+            [
+                'key' => 'related_campus',
+                'compare' => 'LIKE',
+                'value' => '"' . get_the_ID() . '"'
+            ]
+        ]
+    ]);
+?>
+
     <div class="container container--narrow page-section">
         <div class="metabox metabox--position-up metabox--with-home-link">
             <?php while(have_posts()){
@@ -33,6 +47,21 @@
             </div>
         </div>
 
+        <!-- Related Programs -->
+        <ul class="link-list min-list">
+            <hr class="section-break">
+            <h2 class="headline headline--medium">Program(s) available at this campus .</h2>
+
+            <?php while($relatedPrograms->have_posts()){
+                $relatedPrograms->the_post();
+                ?>
+                <li>
+                    <a href="<?php the_permalink() ?>">
+                        <?php the_title() ?>
+                    </a>
+                </li>
+            <?php } ?>
+        </ul>
     </div>
 
 <?php get_footer() ?>
