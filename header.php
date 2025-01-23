@@ -1,9 +1,16 @@
-<!DOCTYPE html>
-<html <?php language_attributes() ?>>
+<!DOCTYPE html <?php language_attributes() ?>>
 <head>
   <meta charset="<?php bloginfo('charset') ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php wp_head() ?>
+
+    <style>
+        @media (min-width: 960px) {
+            .site-header__menu-trigger {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body <?php body_class() ?>>
     <header class="site-header">
