@@ -8,4 +8,3 @@ import Search from "./modules/Search"
 const mobileMenu = new MobileMenu()
 const heroSlider = new HeroSlider()
 const headerSearch = new Search('header-search', 'header-search-overlay-close', 'search-overlay')
-headerSearch.onTogglSearch()

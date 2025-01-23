@@ -1,15 +1,13 @@
 class Search{
-    searchTrigger = ""
-    closeTrigger = ""
-    ref = ""
-
     constructor(searchTriggerId, closeTriggerId, refId) {
         this.searchTrigger = document.getElementById(searchTriggerId)
         this.closeTrigger = document.getElementById(closeTriggerId)
         this.ref = document.getElementById(refId)
+
+        this.events()
     }
 
-    onTogglSearch() {
+    events(){
         this.searchTrigger.addEventListener('click', this.openOverlay)
         this.closeTrigger.addEventListener('click', this.closeOverlay)
     }
