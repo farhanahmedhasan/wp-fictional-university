@@ -86,8 +86,30 @@
             $relatedEvents->the_post();
             get_template_part('template-parts/content', 'event');
         }
+        wp_reset_postdata();
+    ?>
 
-    wp_reset_postdata()
+    <!-- Available campuses for this program -->
+
+    <?php
+        $relatedCampuses = get_field('related_campus');
+
+        if ($relatedCampuses){
+            echo '<hr class="section-break">';
+            echo '<h2 class="headline headline--medium">' . get_the_title() . ' is available at these campuses.</h2>';
+        }
+
+        echo "<ul class='link-list min-list'>";
+            foreach ($relatedCampuses as $campus) {
+                ?>
+                <li>
+                    <a href="<?php echo get_the_permalink($campus) ?>">
+                        <?php echo get_the_title($campus) ?>
+                    </a>
+                </li>
+            <?php }
+        echo "</ul>";
+        wp_reset_postdata()
     ?>
 </div>
 
