@@ -2288,20 +2288,31 @@ class Search {
           search: e.target.value
         }
       });
-      const data = response.data;
-      if (data.length < 1) {
+      const posts = response.data;
+      if (posts.length < 1) {
         this.searchResult.innerHTML = "No data found";
       }
-      if (data.length > 0) {
-        this.searchResult.innerHTML = "data found";
+      if (posts.length > 0) {
+        this.searchResult.innerHTML = `
+                    <h2 class="search-overlay__section-title">General Information</h2>
+                    <ul class="link-list min-list">
+                        ${posts.map(post => this.getSingleResultHTML(post)).join('')}
+                    </ul>
+                `;
       }
-      console.log(data);
     } catch (err) {
       console.error('Error: ', err.message);
       this.searchResult.innerHTML = this.err.message;
     } finally {
       this.isLoading = false;
     }
+  };
+  getSingleResultHTML = post => {
+    return `
+            <li>
+                <a href="${post.link}"> ${post.title?.rendered} </a>
+            </li>
+        `;
   };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
