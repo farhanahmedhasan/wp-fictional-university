@@ -173,6 +173,7 @@ class Search {
     this.isOverlayOpen = false;
     this.isLoading = false;
     this.typingTimer;
+    this.prevValue;
     this.events();
   }
   events() {
@@ -194,6 +195,8 @@ class Search {
     document.body.classList.remove('body-no-scroll');
     this.isOverlayOpen = false;
     this.input.value = "";
+    this.prevValue = "";
+    this.searchResult.innerHTML = "";
   };
   keyPressDispatcher = e => {
     if (e.key === 's' && !this.isOverlayOpen) {
@@ -204,6 +207,13 @@ class Search {
     }
   };
   searchLogic = e => {
+    if (this.input.value === "") {
+      this.searchResult.innerHTML = "";
+      return;
+    }
+    const currentValue = e.target.value;
+    if (currentValue === this.prevValue) return;
+    this.prevValue = currentValue;
     if (!this.isLoading) {
       this.searchResult.innerHTML = '<div class="spinner-loader"></div>';
       this.isLoading = true;
@@ -213,7 +223,7 @@ class Search {
   };
   getSearchResult = e => {
     this.isLoading = false;
-    this.searchResult.innerHTML = e.target.value;
+    this.searchResult.innerHTML = "yo yoy oy yo";
   };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
