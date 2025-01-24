@@ -41,8 +41,10 @@ class Search{
         this.searchResult.innerHTML = ""
     }
 
-    keyPressDispatcher = (e)=>{
-        if (e.key === 's' && !this.isOverlayOpen){
+    keyPressDispatcher = (e)=> {
+        const isInputFocused = document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement;
+
+        if (e.key === 's' && !this.isOverlayOpen && !isInputFocused){
             this.openOverlay()
         }
 

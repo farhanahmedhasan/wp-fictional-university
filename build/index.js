@@ -199,7 +199,8 @@ class Search {
     this.searchResult.innerHTML = "";
   };
   keyPressDispatcher = e => {
-    if (e.key === 's' && !this.isOverlayOpen) {
+    const isInputFocused = document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement;
+    if (e.key === 's' && !this.isOverlayOpen && !isInputFocused) {
       this.openOverlay();
     }
     if (e.key === 'Escape' && this.isOverlayOpen) {
