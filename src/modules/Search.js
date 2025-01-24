@@ -1,8 +1,9 @@
 class Search{
-    constructor(searchTriggerId, closeTriggerId, refId) {
+    constructor(searchTriggerId, closeTriggerId, refId, inputId) {
         this.searchTrigger = document.getElementById(searchTriggerId)
         this.closeTrigger = document.getElementById(closeTriggerId)
         this.ref = document.getElementById(refId)
+        this.input = document.getElementById(inputId)
 
         this.isOverlayOpen = false
 
@@ -20,6 +21,10 @@ class Search{
         this.ref.classList.add('search-overlay--active')
         document.body.classList.add('body-no-scroll')
         this.isOverlayOpen = true
+
+        setTimeout(() => {
+            this.input.focus();
+        }, 300);
     }
 
     closeOverlay = ()=> {

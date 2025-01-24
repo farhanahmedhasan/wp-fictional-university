@@ -21,7 +21,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_3__["default"]();
-const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('header-search', 'header-search-overlay-close', 'search-overlay');
+const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('header-search', 'header-search-overlay-close', 'search-overlay', 'header-search-input');
 
 /***/ }),
 
@@ -164,10 +164,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 class Search {
-  constructor(searchTriggerId, closeTriggerId, refId) {
+  constructor(searchTriggerId, closeTriggerId, refId, inputId) {
     this.searchTrigger = document.getElementById(searchTriggerId);
     this.closeTrigger = document.getElementById(closeTriggerId);
     this.ref = document.getElementById(refId);
+    this.input = document.getElementById(inputId);
     this.isOverlayOpen = false;
     this.events();
   }
@@ -180,6 +181,9 @@ class Search {
     this.ref.classList.add('search-overlay--active');
     document.body.classList.add('body-no-scroll');
     this.isOverlayOpen = true;
+    setTimeout(() => {
+      this.input.focus();
+    }, 300);
   };
   closeOverlay = () => {
     this.ref.classList.remove('search-overlay--active');
