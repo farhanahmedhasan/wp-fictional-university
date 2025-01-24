@@ -14,10 +14,12 @@ class Search{
 
     openOverlay = () => {
         this.ref.classList.add('search-overlay--active')
+        document.body.classList.add('body-no-scroll')
     }
 
     closeOverlay = ()=> {
         this.ref.classList.remove('search-overlay--active')
+        document.body.classList.remove('body-no-scroll')
     }
 }
 
