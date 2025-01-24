@@ -1,3 +1,5 @@
+import axios from "axios";
+
 class Search{
     constructor(searchTriggerId, closeTriggerId, refId, inputId, searchResultId) {
         this.searchTrigger = document.getElementById(searchTriggerId)
@@ -72,9 +74,30 @@ class Search{
         this.typingTimer = setTimeout(()=> this.getSearchResult(e), 500)
     }
 
-    getSearchResult = (e) => {
-        this.isLoading = false
-        this.searchResult.innerHTML = "yo yoy oy yo"
+    getSearchResult = async (e) => {
+        try {
+            const response = await axios.get('/wp-json/wp/v2/posts', {
+                params: {
+                    search : e.target.value
+                }
+            })
+            const data = response.data
+
+            if (data.length < 1){
+                this.searchResult.innerHTML = "No data found"
+            }
+
+            if (data.length > 0){
+                this.searchResult.innerHTML = "data found"
+            }
+
+            console.log(data)
+        } catch (err) {
+            console.error('Error: ', err.message)
+            this.searchResult.innerHTML = this.err.message
+        } finally {
+            this.isLoading = false
+        }
     }
 }
 
