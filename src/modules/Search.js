@@ -1,11 +1,13 @@
 class Search{
-    constructor(searchTriggerId, closeTriggerId, refId, inputId) {
+    constructor(searchTriggerId, closeTriggerId, refId, inputId, searchResultId) {
         this.searchTrigger = document.getElementById(searchTriggerId)
         this.closeTrigger = document.getElementById(closeTriggerId)
         this.ref = document.getElementById(refId)
         this.input = document.getElementById(inputId)
+        this.searchResult = document.getElementById(searchResultId)
 
         this.isOverlayOpen = false
+        this.isLoading = false
         this.typingTimer;
 
         this.events()
@@ -14,8 +16,8 @@ class Search{
     events(){
         this.searchTrigger.addEventListener('click', this.openOverlay)
         this.closeTrigger.addEventListener('click', this.closeOverlay)
-        this.input.addEventListener('keyup', this.searchLogic)
 
+        this.input.addEventListener('keyup', this.searchLogic)
         document.addEventListener('keydown', this.keyPressDispatcher)
     }
 
@@ -47,11 +49,18 @@ class Search{
     }
 
     searchLogic = (e) => {
-        clearTimeout(this.typingTimer)
+        if (!this.isLoading){
+            this.searchResult.innerHTML = '<div class="spinner-loader"></div>'
+            this.isLoading = true
+        }
 
-        this.typingTimer = setTimeout(()=> {
-            console.log(e.target.value)
-        }, 500)
+        clearTimeout(this.typingTimer)
+        this.typingTimer = setTimeout(()=> this.getSearchResult(e), 500)
+    }
+
+    getSearchResult = (e) => {
+        this.isLoading = false
+        this.searchResult.innerHTML = e.target.value
     }
 }
 

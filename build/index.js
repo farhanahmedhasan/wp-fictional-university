@@ -21,7 +21,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_3__["default"]();
-const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('header-search', 'header-search-overlay-close', 'search-overlay', 'header-search-input');
+const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('header-search', 'header-search-overlay-close', 'search-overlay', 'header-search-input', 'search-overlay-results');
 
 /***/ }),
 
@@ -164,12 +164,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 class Search {
-  constructor(searchTriggerId, closeTriggerId, refId, inputId) {
+  constructor(searchTriggerId, closeTriggerId, refId, inputId, searchResultId) {
     this.searchTrigger = document.getElementById(searchTriggerId);
     this.closeTrigger = document.getElementById(closeTriggerId);
     this.ref = document.getElementById(refId);
     this.input = document.getElementById(inputId);
+    this.searchResult = document.getElementById(searchResultId);
     this.isOverlayOpen = false;
+    this.isLoading = false;
     this.typingTimer;
     this.events();
   }
@@ -202,10 +204,16 @@ class Search {
     }
   };
   searchLogic = e => {
+    if (!this.isLoading) {
+      this.searchResult.innerHTML = '<div class="spinner-loader"></div>';
+      this.isLoading = true;
+    }
     clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(() => {
-      console.log(e.target.value);
-    }, 500);
+    this.typingTimer = setTimeout(() => this.getSearchResult(e), 500);
+  };
+  getSearchResult = e => {
+    this.isLoading = false;
+    this.searchResult.innerHTML = e.target.value;
   };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
