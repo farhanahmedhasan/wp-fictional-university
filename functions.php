@@ -1,5 +1,7 @@
 <?php
 
+require get_theme_file_path('/inc/search-route.php');
+
 add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
 add_action('pre_get_posts', 'adjustQueries');
