@@ -76,40 +76,51 @@ class Search{
 
     getSearchResult = async (e) => {
         try {
-            const response = await axios.get('/wp-json/wp/v2/posts', {
+            const options = {
                 params: {
-                    search : e.target.value
+                    search : e.target.value,
+                    per_page: 2
                 }
-            })
-            const posts = response.data
+            }
 
-            if (posts.length < 1){
+            const responses = await Promise.all([
+                axios.get('/wp-json/wp/v2/posts', options),
+                axios.get('/wp-json/wp/v2/pages', options),
+                axios.get('/wp-json/wp/v2/event', options),
+                axios.get('/wp-json/wp/v2/program', options),
+                axios.get('/wp-json/wp/v2/professor', options)
+            ])
+
+            const [posts,pages,events,programs,professors] = responses.map(res => res.data)
+            const combinedResults = [...posts, ...pages, ...events, ...programs, ...professors]
+
+            if (combinedResults.length < 1){
                 this.searchResult.innerHTML = `
                     <h2 class="search-overlay__section-title">General Information</h2>
                     <p>No general information that matches our search.</p>
                 `
             }
 
-            if (posts.length > 0){
+            if (combinedResults.length > 0){
                 this.searchResult.innerHTML = `
                     <h2 class="search-overlay__section-title">General Information</h2>
                     <ul class="link-list min-list">
-                        ${posts.map(post => this.getSingleResultHTML(post)).join('')}
+                        ${combinedResults.map(item => this.getSingleResultHTML(item)).join('')}
                     </ul>
                 `
             }
         } catch (err) {
             console.error('Error: ', err.message)
-            this.searchResult.innerHTML = this.err.message
+            this.searchResult.innerHTML = "<p>Internal error try again.</p>"
         } finally {
             this.isLoading = false
         }
     }
 
-    getSingleResultHTML = (post) => {
+    getSingleResultHTML = (item) => {
         return `
             <li>
-                <a href="${post.link}"> ${post.title?.rendered} </a>
+                <a href="${item.link}"> ${item.title?.rendered} </a>
             </li>
         `
     }
