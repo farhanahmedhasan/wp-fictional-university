@@ -84,7 +84,10 @@ class Search{
             const posts = response.data
 
             if (posts.length < 1){
-                this.searchResult.innerHTML = "No data found"
+                this.searchResult.innerHTML = `
+                    <h2 class="search-overlay__section-title">General Information</h2>
+                    <p>No general information that matches our search.</p>
+                `
             }
 
             if (posts.length > 0){
