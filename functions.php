@@ -3,8 +3,18 @@
 add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
 add_action('pre_get_posts', 'adjustQueries');
+add_action('rest_api_init', 'universityCustomRest');
 
 add_filter('body_class', 'addCustomPostTypeBodyClass');
+
+function universityCustomRest(): void
+{
+    register_rest_field('post', 'authorName', [
+        'get_callback' => function() {
+            return get_the_author();
+        }
+    ]);
+}
 
 function addCustomPostTypeBodyClass($classes){
     if (is_page('campuses')) {

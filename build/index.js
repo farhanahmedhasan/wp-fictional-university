@@ -2314,9 +2314,11 @@ class Search {
     }
   };
   getSingleResultHTML = item => {
+    const isTypePost = item.type === 'post';
     return `
             <li>
-                <a href="${item.link}"> ${item.title?.rendered} </a>
+                <a href="${item.link}"> ${item.title?.rendered}</a>
+                ${isTypePost ? ' by ' + item.authorName : ''}
             </li>
         `;
   };
