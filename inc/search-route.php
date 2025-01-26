@@ -12,7 +12,7 @@ function registerSearch(): void {
 function getSearchResults(WP_REST_Request $request): array {
     return [
         'cat' => 'meow',
-        'data' => getMultiplePostsByType($request),
+        'results' => getMultiplePostsByType($request),
     ];
 }
 

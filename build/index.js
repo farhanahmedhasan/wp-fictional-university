@@ -2285,24 +2285,25 @@ class Search {
     try {
       const options = {
         params: {
-          search: e.target.value,
+          keyword: e.target.value,
           per_page: 2
         }
       };
-      const responses = await Promise.all([axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/wp/v2/posts', options), axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/wp/v2/pages', options), axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/wp/v2/event', options), axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/wp/v2/program', options), axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/wp/v2/professor', options)]);
-      const [posts, pages, events, programs, professors] = responses.map(res => res.data);
-      const combinedResults = [...posts, ...pages, ...events, ...programs, ...professors];
-      if (combinedResults.length < 1) {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/university/v1/search', options);
+      const data = response.data.results;
+      console.log(data);
+      const isEmpty = Object.keys(data).every(key => data[key].length === 0);
+      if (isEmpty) {
         this.searchResult.innerHTML = `
                     <h2 class="search-overlay__section-title">General Information</h2>
                     <p>No general information that matches our search.</p>
                 `;
       }
-      if (combinedResults.length > 0) {
+      if (!isEmpty) {
         this.searchResult.innerHTML = `
                     <h2 class="search-overlay__section-title">General Information</h2>
                     <ul class="link-list min-list">
-                        ${combinedResults.map(item => this.getSingleResultHTML(item)).join('')}
+                        ${data.campus.map(item => this.getSingleResultHTML(item)).join('')}
                     </ul>
                 `;
       }
@@ -2314,11 +2315,9 @@ class Search {
     }
   };
   getSingleResultHTML = item => {
-    const isTypePost = item.type === 'post';
     return `
             <li>
-                <a href="${item.link}"> ${item.title?.rendered}</a>
-                ${isTypePost ? ' by ' + item.authorName : ''}
+                <a href="${item.link}"> ${item.title}</a>
             </li>
         `;
   };
