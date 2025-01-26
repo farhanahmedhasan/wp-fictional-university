@@ -98,10 +98,26 @@ class Search{
 
             if (!isEmpty){
                 this.searchResult.innerHTML = `
-                    <h2 class="search-overlay__section-title">General Information</h2>
-                    <ul class="link-list min-list">
-                        ${data.campus.map(item => this.getSingleResultHTML(item)).join('')}
-                    </ul>
+                    <div class="row">
+                        <div class="one-third">
+                            <h2 class="search-overlay__section-title">General Information</h2>
+                            ${this.getSinglePostTypeResultsIfExists(data,'generalInfo')}
+                        </div>
+                        <div class="one-third">
+                            <h2 class="search-overlay__section-title">Programs</h2>
+                            ${this.getSinglePostTypeResultsIfExists(data,'program')}
+                            
+                            <h2 class="search-overlay__section-title">Professors</h2>
+                            ${this.getSinglePostTypeResultsIfExists(data,'professor')}
+                        </div>
+                        <div class="one-third">
+                            <h2 class="search-overlay__section-title">Campuses</h2>
+                            ${this.getSinglePostTypeResultsIfExists(data,'campus')}
+                            
+                            <h2 class="search-overlay__section-title">Events</h2>
+                            ${this.getSinglePostTypeResultsIfExists(data,'event')}
+                        </div>
+                    </div>
                 `
             }
         } catch (err) {
@@ -111,6 +127,8 @@ class Search{
             this.isLoading = false
         }
     }
+
+    getSinglePostTypeResultsIfExists = (data,postType) => data[postType].length > 0 ? data[postType].map(item=> this.getSingleResultHTML(item)).join('') : '<p>No data found</p>'
 
     getSingleResultHTML = (item) => {
         return `
