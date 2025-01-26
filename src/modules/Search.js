@@ -131,9 +131,12 @@ class Search{
     getSinglePostTypeResultsIfExists = (data,postType) => data[postType].length > 0 ? data[postType].map(item=> this.getSingleResultHTML(item)).join('') : '<p>No data found</p>'
 
     getSingleResultHTML = (item) => {
+        const string = item.post_type === "post" ? " by " + item.author_name : ""
+
         return `
             <li>
                 <a href="${item.link}"> ${item.title}</a>
+                ${string}
             </li>
         `
     }

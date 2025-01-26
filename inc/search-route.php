@@ -29,9 +29,10 @@ function getMultiplePostsByType ($request): array {
         if ($postType === "post" || $postType === "page") {
             $posts = array_map(function($post) {
                 return [
-                    'post_type' => $post->post_type,
+                    'author_name'=> get_the_author_meta('display_name', $post->post_author),
                     'title' => get_the_title($post->ID),
                     'link' => get_the_permalink($post->ID),
+                    'post_type' => get_post_type($post->ID),
                 ];
             }, $query->posts);
 
@@ -41,9 +42,10 @@ function getMultiplePostsByType ($request): array {
 
         $results[$postType] = array_map(function($post) {
             return [
-                'post_type' => $post->post_type,
+                'author_name'=> get_the_author_meta('display_name', $post->post_author),
                 'title' => get_the_title($post->ID),
                 'link' => get_the_permalink($post->ID),
+                'post_type' => get_post_type($post->ID),
             ];
         }, $query->posts);
     }
