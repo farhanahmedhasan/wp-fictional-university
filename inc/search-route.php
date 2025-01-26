@@ -9,29 +9,26 @@ function registerSearch(): void {
     ]);
 }
 
-function getSearchResults(): array {
+function getSearchResults(WP_REST_Request $request): array {
     return [
         'cat' => 'meow',
-        'professors' => getProfessors()
+        'professors' => getProfessors($request),
     ];
 }
 
-function getProfessors (): array {
+function getProfessors ($request): array {
+    $searchKeyword = $request->get_param('keyword');
+
     $professorQuery = new WP_Query([
         'post_type' => 'professor',
+        's' => _sanitize_text_fields($searchKeyword),
         'posts_per_page' => -1
     ]);
 
-    $professors = [];
-
-    while ($professorQuery->have_posts()){
-        $professorQuery->the_post();
-
-        $professors[] = [
-            'title' => get_the_title(),
-            'link' => get_the_permalink()
+    return array_map(function($post) {
+        return [
+            'title' => get_the_title($post->ID),
+            'link' => get_the_permalink($post->ID)
         ];
-    }
-
-    return $professors;
+    }, $professorQuery->posts);
 }
