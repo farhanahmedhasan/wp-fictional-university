@@ -84,7 +84,7 @@ class Search{
             }
 
             const response = await axios.get('/wp-json/university/v1/search', options)
-            const data = response.data.results
+            const data = response.data
             console.log(data)
 
             const isEmpty = Object.keys(data).every(key => data[key].length === 0)

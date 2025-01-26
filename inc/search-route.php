@@ -10,10 +10,7 @@ function registerSearch(): void {
 }
 
 function getSearchResults(WP_REST_Request $request): array {
-    return [
-        'cat' => 'meow',
-        'results' => getMultiplePostsByType($request),
-    ];
+    return getMultiplePostsByType($request);
 }
 
 function getMultiplePostsByType ($request): array {
@@ -30,18 +27,21 @@ function getMultiplePostsByType ($request): array {
         ]);
 
         if ($postType === "post" || $postType === "page") {
-            $results['generalInfo'] = array_map(function($post) {
+            $posts = array_map(function($post) {
                 return [
+                    'post_type' => $post->post_type,
                     'title' => get_the_title($post->ID),
                     'link' => get_the_permalink($post->ID),
                 ];
             }, $query->posts);
 
+            $results['generalInfo'] = array_merge($results['generalInfo'] ?? [], $posts);
             continue;
         }
 
         $results[$postType] = array_map(function($post) {
             return [
+                'post_type' => $post->post_type,
                 'title' => get_the_title($post->ID),
                 'link' => get_the_permalink($post->ID),
             ];
