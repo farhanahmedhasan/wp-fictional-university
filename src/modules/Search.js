@@ -84,7 +84,7 @@ class Search{
             }
 
             const response = await axios.get('/wp-json/university/v1/search', options)
-            const data = response.data
+            const data = response.data.results
             console.log(data)
 
             const isEmpty = Object.keys(data).every(key => data[key].length === 0)
@@ -128,7 +128,13 @@ class Search{
         }
     }
 
-    getSinglePostTypeResultsIfExists = (data,postType) => data[postType].length > 0 ? data[postType].map(item=> this.getSingleResultHTML(item)).join('') : '<p>No data found</p>'
+    getSinglePostTypeResultsIfExists = (data,postType) => {
+        console.log(data)
+
+        return data[postType].length > 0 ?
+            data[postType].map(item=> this.getSingleResultHTML(item)).join('')
+            : `<p>No data found. view all <a>${''}</a></p>`
+    }
 
     getSingleResultHTML = (item) => {
         const string = item.post_type === "post" ? " by " + item.author_name : ""
