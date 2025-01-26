@@ -14,7 +14,7 @@ function getSearchResults(WP_REST_Request $request): array {
 
     return [
         'results' => getMultiplePostsByType($request, $postTypes),
-        'view_all_post_type_links' => getAllPostTypeLinks($postTypes)
+        'view_all_post_type_links' => getAllPostTypeLinks()
     ];
 }
 
@@ -41,13 +41,13 @@ function getMultiplePostsByType ($request, $postTypes): array {
     return $results;
 }
 
-function getAllPostTypeLinks($postTypes): array {
-    $allPostTypesLink = [];
-    foreach ($postTypes as $postType){
-        $allPostTypesLink[$postType] = $postType;
-    }
-
-    return $allPostTypesLink;
+function getAllPostTypeLinks(): array {
+    return [
+        'post' => home_url('/blog/'),
+        'program' => home_url('/programs/'),
+        'campus' => home_url('/campuses/'),
+        'event' => home_url('/events/'),
+    ];
 }
 
 function getFields($post): array {

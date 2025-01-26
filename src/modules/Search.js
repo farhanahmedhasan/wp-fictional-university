@@ -85,7 +85,7 @@ class Search{
 
             const response = await axios.get('/wp-json/university/v1/search', options)
             const data = response.data.results
-            console.log(data)
+            const pageLinks = response.data.view_all_post_type_links
 
             const isEmpty = Object.keys(data).every(key => data[key].length === 0)
 
@@ -101,21 +101,21 @@ class Search{
                     <div class="row">
                         <div class="one-third">
                             <h2 class="search-overlay__section-title">General Information</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'generalInfo')}
+                            ${this.getSinglePostTypeResultsIfExists(data,'generalInfo',pageLinks)}
                         </div>
                         <div class="one-third">
                             <h2 class="search-overlay__section-title">Programs</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'program')}
+                            ${this.getSinglePostTypeResultsIfExists(data,'program',pageLinks)}
                             
                             <h2 class="search-overlay__section-title">Professors</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'professor')}
+                            ${this.getSinglePostTypeResultsIfExists(data,'professor',pageLinks)}
                         </div>
                         <div class="one-third">
                             <h2 class="search-overlay__section-title">Campuses</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'campus')}
+                            ${this.getSinglePostTypeResultsIfExists(data,'campus',pageLinks)}
                             
                             <h2 class="search-overlay__section-title">Events</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'event')}
+                            ${this.getSinglePostTypeResultsIfExists(data,'event',pageLinks)}
                         </div>
                     </div>
                 `
@@ -128,12 +128,12 @@ class Search{
         }
     }
 
-    getSinglePostTypeResultsIfExists = (data,postType) => {
-        console.log(data)
+    getSinglePostTypeResultsIfExists = (data,postType,pageLinks) => {
+        const link = pageLinks[postType] ? `view all <a href=${pageLinks[postType]}>${postType}</a>` : ''
 
         return data[postType].length > 0 ?
             data[postType].map(item=> this.getSingleResultHTML(item)).join('')
-            : `<p>No data found. view all <a>${''}</a></p>`
+            : `<p>No data found. ${link}</p>`
     }
 
     getSingleResultHTML = (item) => {
