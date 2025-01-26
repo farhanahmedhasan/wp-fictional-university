@@ -12,23 +12,41 @@ function registerSearch(): void {
 function getSearchResults(WP_REST_Request $request): array {
     return [
         'cat' => 'meow',
-        'professors' => getProfessors($request),
+        'data' => getMultiplePostsByType($request),
     ];
 }
 
-function getProfessors ($request): array {
+function getMultiplePostsByType ($request): array {
     $searchKeyword = $request->get_param('keyword');
 
-    $professorQuery = new WP_Query([
-        'post_type' => 'professor',
-        's' => _sanitize_text_fields($searchKeyword),
-        'posts_per_page' => -1
-    ]);
+    $postTypes = ['post', 'page', 'professor', 'program', 'campus', 'event'];
+    $results = [];
 
-    return array_map(function($post) {
-        return [
-            'title' => get_the_title($post->ID),
-            'link' => get_the_permalink($post->ID)
-        ];
-    }, $professorQuery->posts);
+    foreach ($postTypes as $postType){
+        $query = new WP_Query([
+            'post_type' => $postType,
+            's' => _sanitize_text_fields($searchKeyword),
+            'posts_per_page' => -1
+        ]);
+
+        if ($postType === "post" || $postType === "page") {
+            $results['generalInfo'] = array_map(function($post) {
+                return [
+                    'title' => get_the_title($post->ID),
+                    'link' => get_the_permalink($post->ID),
+                ];
+            }, $query->posts);
+
+            continue;
+        }
+
+        $results[$postType] = array_map(function($post) {
+            return [
+                'title' => get_the_title($post->ID),
+                'link' => get_the_permalink($post->ID),
+            ];
+        }, $query->posts);
+    }
+
+    return $results;
 }
