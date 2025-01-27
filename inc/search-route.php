@@ -10,7 +10,7 @@ function registerSearch(): void {
 }
 
 function getSearchResults(WP_REST_Request $request): array {
-    $postTypes = ['post', 'page', 'professor', 'program', 'campus', 'event'];
+    $postTypes = ['post', 'page', 'program', 'professor', 'campus', 'event'];
 
     return [
         'results' => getMultiplePostsByType($request, $postTypes),
@@ -36,6 +36,31 @@ function getMultiplePostsByType ($request, $postTypes): array {
         }
 
         $results[$postType] = array_map(fn($post)=> getFields($post, $postType), $query->posts);
+
+        if($postType === 'professor' && !empty($results['program'])){
+            $programMetaQuery = [
+                'relation' => 'OR'
+            ];
+
+            foreach ($results['program'] as $post){
+                $programMetaQuery[] = [
+                    'key' => 'related_programs',
+                    'compare' => 'LIKE',
+                    'value' => '"' . $post['id'] . '"'
+                ];
+            }
+
+            $programRelationQuery = new WP_Query([
+                'post_type' => 'professor',
+                'posts_per_page' => -1,
+                'meta_query' => $programMetaQuery
+            ]);
+
+            $relatedProf = array_map(fn($post)=> getFields($post, $postType), $programRelationQuery->posts);
+            $results['professor'] = array_merge($results['professor'] ?? [], $relatedProf);
+
+            $results['professor'] = array_unique($results['professor'], SORT_REGULAR);
+        }
     }
 
     return $results;
@@ -52,6 +77,7 @@ function getAllPostTypeLinks(): array {
 
 function getFields($post, $postType): array {
     $fields = [
+        'id' => $post->ID,
         'author_name'=> get_the_author_meta('display_name', $post->post_author),
         'title' => get_the_title($post->ID),
         'link' => get_the_permalink($post->ID),
