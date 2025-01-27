@@ -62,5 +62,17 @@ function getFields($post, $postType): array {
         $fields['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'professorLandscaped');
     }
 
+    if($postType === 'event'){
+        $event_date = new DateTime(get_field('event_date', $post->ID));
+
+        $fields['excerpt'] = has_excerpt($post->ID) ? get_the_excerpt($post->ID) : wp_trim_words(get_post_field('post_content',$post->ID), 18);
+        $fields['upcoming_event_time'] = [
+            'event_full_time' => get_field('event_date', $post->ID),
+            'event_month' => $event_date->format('M'),
+            'event_day' => $event_date->format('j')
+        ];
+
+    }
+
     return $fields;
 }

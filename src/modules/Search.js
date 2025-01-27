@@ -108,6 +108,7 @@ class Search{
                             ${this.getSinglePostTypeResultsIfExists(data,'program',pageLinks)}
                             
                             <h2 class="search-overlay__section-title">Professors</h2>
+                            ${data.professor.length < 1 ? `<p>No Professors Found.</p>`: ''}
                             <ul class="professor-cards">
                                 ${data.professor.map(item => 
                                     `
@@ -126,7 +127,26 @@ class Search{
                             ${this.getSinglePostTypeResultsIfExists(data,'campus',pageLinks)}
                             
                             <h2 class="search-overlay__section-title">Events</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'event',pageLinks)}
+                            ${data.event.length < 1 ? `<p>No Events Found. View all <a href="${pageLinks.event}">Events</a></p>`: ''}
+                            ${data.event.map(item =>
+                            `
+                                <div class="event-summary">
+                                    <a class="event-summary__date t-center" href="${item.link}">
+                                        <span class="event-summary__month">${item.upcoming_event_time.event_month}</span>
+                                        <span class="event-summary__day">${item.upcoming_event_time.event_day}</span>
+                                    </a>
+                                    <div class="event-summary__content">
+                                        <h5 class="event-summary__title headline headline--tiny">
+                                            <a href=${item.link}>${item.title}</a>
+                                        </h5>
+                                        <p>
+                                            ${item.excerpt}
+                                            <a href=${item.link} class="nu gray">Learn more</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            `
+                            ).join('')}
                         </div>
                     </div>
                 `
