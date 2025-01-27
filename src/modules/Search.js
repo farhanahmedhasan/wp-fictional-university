@@ -108,7 +108,18 @@ class Search{
                             ${this.getSinglePostTypeResultsIfExists(data,'program',pageLinks)}
                             
                             <h2 class="search-overlay__section-title">Professors</h2>
-                            ${this.getSinglePostTypeResultsIfExists(data,'professor',pageLinks)}
+                            <ul class="professor-cards">
+                                ${data.professor.map(item => 
+                                    `
+                                    <li class="professor-card__list-item">
+                                        <a class="professor-card" href=${item.link}>
+                                            <img class="professor-card__image" src=${item.thumbnail} alt="">
+                                            <span class="professor-card__name">${item.title}</span>
+                                        </a>
+                                    </li>
+                                    `
+                                ).join('')}
+                            </ul>
                         </div>
                         <div class="one-third">
                             <h2 class="search-overlay__section-title">Campuses</h2>

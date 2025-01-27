@@ -30,12 +30,12 @@ function getMultiplePostsByType ($request, $postTypes): array {
         ]);
 
         if ($postType === "post" || $postType === "page") {
-            $posts = array_map(fn($post)=> getFields($post), $query->posts);
+            $posts = array_map(fn($post)=> getFields($post, $postType), $query->posts);
             $results['generalInfo'] = array_merge($results['generalInfo'] ?? [], $posts);
             continue;
         }
 
-        $results[$postType] = array_map(fn($post)=> getFields($post), $query->posts);
+        $results[$postType] = array_map(fn($post)=> getFields($post, $postType), $query->posts);
     }
 
     return $results;
@@ -50,11 +50,17 @@ function getAllPostTypeLinks(): array {
     ];
 }
 
-function getFields($post): array {
-    return [
+function getFields($post, $postType): array {
+    $fields = [
         'author_name'=> get_the_author_meta('display_name', $post->post_author),
         'title' => get_the_title($post->ID),
         'link' => get_the_permalink($post->ID),
         'post_type' => get_post_type($post->ID),
     ];
+
+    if($postType === 'professor'){
+        $fields['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'professorLandscaped');
+    }
+
+    return $fields;
 }
