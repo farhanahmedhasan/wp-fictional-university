@@ -10,7 +10,7 @@ function registerSearch(): void {
 }
 
 function getSearchResults(WP_REST_Request $request): array {
-    $postTypes = ['post', 'page', 'program', 'professor', 'campus', 'event'];
+    $postTypes = ['post', 'page', 'program', 'professor', 'event', 'campus'];
 
     return [
         'results' => getMultiplePostsByType($request, $postTypes),
@@ -30,14 +30,14 @@ function getMultiplePostsByType ($request, $postTypes): array {
         ]);
 
         if ($postType === "post" || $postType === "page") {
-            $posts = array_map(fn($post)=> getFields($post, $postType), $query->posts);
+            $posts = array_map(fn($post)=> getFields($post), $query->posts);
             $results['generalInfo'] = array_merge($results['generalInfo'] ?? [], $posts);
             continue;
         }
 
-        $results[$postType] = array_map(fn($post)=> getFields($post, $postType), $query->posts);
+        $results[$postType] = array_map(fn($post)=> getFields($post), $query->posts);
 
-        if($postType === 'professor' && !empty($results['program'])){
+        if(in_array($postType, ['professor', 'event']) && !empty($results['program'])){
             $programMetaQuery = [
                 'relation' => 'OR'
             ];
@@ -51,15 +51,25 @@ function getMultiplePostsByType ($request, $postTypes): array {
             }
 
             $programRelationQuery = new WP_Query([
-                'post_type' => 'professor',
+                'post_type' => ['professor', 'event'],
                 'posts_per_page' => -1,
                 'meta_query' => $programMetaQuery
             ]);
 
-            $relatedProf = array_map(fn($post)=> getFields($post, $postType), $programRelationQuery->posts);
-            $results['professor'] = array_merge($results['professor'] ?? [], $relatedProf);
+            $relatedPosts = array_map(fn($post)=> getFields($post), $programRelationQuery->posts);
 
-            $results['professor'] = array_unique($results['professor'], SORT_REGULAR);
+            foreach ($relatedPosts as $post){
+                if ($post['post_type'] === 'professor'){
+                    $results['professor'][] = $post;
+                }
+
+                if ($post['post_type'] === 'event'){
+                    $results['event'][] = $post;
+                }
+            }
+
+            $results['professor'] = array_unique($results['professor'] ?? [], SORT_REGULAR);
+            $results['event'] = array_unique($results['event'] ?? [], SORT_REGULAR);
         }
     }
 
@@ -75,7 +85,7 @@ function getAllPostTypeLinks(): array {
     ];
 }
 
-function getFields($post, $postType): array {
+function getFields($post): array {
     $fields = [
         'id' => $post->ID,
         'author_name'=> get_the_author_meta('display_name', $post->post_author),
@@ -84,11 +94,11 @@ function getFields($post, $postType): array {
         'post_type' => get_post_type($post->ID),
     ];
 
-    if($postType === 'professor'){
+    if($post->post_type === 'professor'){
         $fields['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'professorLandscaped');
     }
 
-    if($postType === 'event'){
+    if($post->post_type === 'event'){
         $event_date = new DateTime(get_field('event_date', $post->ID));
 
         $fields['excerpt'] = has_excerpt($post->ID) ? get_the_excerpt($post->ID) : wp_trim_words(get_post_field('post_content',$post->ID), 18);
