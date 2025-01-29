@@ -39,33 +39,22 @@ function getMultiplePostsByType ($request, $postTypes): array {
 
         if(in_array($postType, ['professor', 'event']) && !empty($results['program'])){
             $programMetaQuery = [
-                'relation' => 'OR'
-            ];
-
-            foreach ($results['program'] as $post){
-                $programMetaQuery[] = [
+                'relation' => 'OR',
+                ...array_map(fn($post)=> [
                     'key' => 'related_programs',
                     'compare' => 'LIKE',
                     'value' => '"' . $post['id'] . '"'
-                ];
-            }
+                ],$results['program'])
+            ];
 
-            $programRelationQuery = new WP_Query([
+            $relatedPosts = array_map(fn($post)=> getFields($post), (new WP_Query([
                 'post_type' => ['professor', 'event'],
                 'posts_per_page' => -1,
                 'meta_query' => $programMetaQuery
-            ]);
-
-            $relatedPosts = array_map(fn($post)=> getFields($post), $programRelationQuery->posts);
+            ]))->posts);
 
             foreach ($relatedPosts as $post){
-                if ($post['post_type'] === 'professor'){
-                    $results['professor'][] = $post;
-                }
-
-                if ($post['post_type'] === 'event'){
-                    $results['event'][] = $post;
-                }
+                $results[$post['post_type']][] = $post;
             }
 
             $results['professor'] = array_unique($results['professor'] ?? [], SORT_REGULAR);
