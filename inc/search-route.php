@@ -35,9 +35,16 @@ function getMultiplePostsByType ($request, $postTypes): array {
             continue;
         }
 
-        $results[$postType] = array_map(fn($post)=> getFields($post), $query->posts);
+        $results[$postType] = array_merge($results[$postType] ?? [], array_map(fn($post)=> getFields($post), $query->posts));
 
-        if(in_array($postType, ['professor', 'event']) && !empty($results['program'])){
+        if(in_array($postType, ['professor', 'event', 'program']) && !empty($results['program'])){
+            foreach ($query->posts as $post) {
+                $relatedCampuses = get_field('related_campus', $post->ID);
+                if ($relatedCampuses) {
+                    $results['campus'] = array_map(fn($post) => getFields($post), $relatedCampuses);
+                }
+            }
+
             $programMetaQuery = [
                 'relation' => 'OR',
                 ...array_map(fn($post)=> [
@@ -59,9 +66,9 @@ function getMultiplePostsByType ($request, $postTypes): array {
 
             $results['professor'] = array_values(array_unique($results['professor'] ?? [], SORT_REGULAR));
             $results['event'] = array_values(array_unique($results['event'] ?? [], SORT_REGULAR));
+            $results['campus'] = array_values(array_unique($results['campus'] ?? [], SORT_REGULAR));
         }
     }
-
     return $results;
 }
 
