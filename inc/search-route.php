@@ -57,8 +57,8 @@ function getMultiplePostsByType ($request, $postTypes): array {
                 $results[$post['post_type']][] = $post;
             }
 
-            $results['professor'] = array_unique($results['professor'] ?? [], SORT_REGULAR);
-            $results['event'] = array_unique($results['event'] ?? [], SORT_REGULAR);
+            $results['professor'] = array_values(array_unique($results['professor'] ?? [], SORT_REGULAR));
+            $results['event'] = array_values(array_unique($results['event'] ?? [], SORT_REGULAR));
         }
     }
 

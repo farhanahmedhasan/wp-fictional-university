@@ -91,8 +91,8 @@ class Search{
 
             if (isEmpty){
                 this.searchResult.innerHTML = `
-                    <h2 class="search-overlay__section-title">General Information</h2>
-                    <p>No general information that matches our search.</p>
+                    <h2 class="search-overlay__section-title">Information</h2>
+                    <p>No information that matches our search.</p>
                 `
             }
 
