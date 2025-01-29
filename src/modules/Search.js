@@ -1,8 +1,8 @@
 import axios from "axios";
 
 class Search{
-    constructor(searchTriggerId, closeTriggerId, refId, inputId, searchResultId) {
-        this.searchTrigger = document.getElementById(searchTriggerId)
+    constructor(searchTriggerRef, closeTriggerId, refId, inputId, searchResultId) {
+        this.searchTrigger = document.querySelectorAll(searchTriggerRef)
         this.closeTrigger = document.getElementById(closeTriggerId)
         this.ref = document.getElementById(refId)
         this.input = document.getElementById(inputId)
@@ -16,15 +16,21 @@ class Search{
         this.events()
     }
 
-    events(){
-        this.searchTrigger.addEventListener('click', this.openOverlay)
+    events = () => {
+        this.searchTrigger.forEach((el)=> {
+            el.addEventListener('click', (e)=> {
+                e.preventDefault()
+                this.openOverlay()
+            })
+        })
+
         this.closeTrigger.addEventListener('click', this.closeOverlay)
 
         this.input.addEventListener('keyup', this.searchLogic)
         document.addEventListener('keydown', this.keyPressDispatcher)
     }
 
-    openOverlay = () => {
+    openOverlay = (e) => {
         this.ref.classList.add('search-overlay--active')
         document.body.classList.add('body-no-scroll')
         this.isOverlayOpen = true

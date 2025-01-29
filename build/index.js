@@ -2073,7 +2073,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_3__["default"]();
-const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('header-search', 'header-search-overlay-close', 'search-overlay', 'header-search-input', 'search-overlay-results');
+const headerSearch = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]('.js-search-trigger', 'header-search-overlay-close', 'search-overlay', 'header-search-input', 'search-overlay-results');
 
 /***/ }),
 
@@ -2223,8 +2223,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 class Search {
-  constructor(searchTriggerId, closeTriggerId, refId, inputId, searchResultId) {
-    this.searchTrigger = document.getElementById(searchTriggerId);
+  constructor(searchTriggerRef, closeTriggerId, refId, inputId, searchResultId) {
+    this.searchTrigger = document.querySelectorAll(searchTriggerRef);
     this.closeTrigger = document.getElementById(closeTriggerId);
     this.ref = document.getElementById(refId);
     this.input = document.getElementById(inputId);
@@ -2235,13 +2235,18 @@ class Search {
     this.prevValue;
     this.events();
   }
-  events() {
-    this.searchTrigger.addEventListener('click', this.openOverlay);
+  events = () => {
+    this.searchTrigger.forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        this.openOverlay();
+      });
+    });
     this.closeTrigger.addEventListener('click', this.closeOverlay);
     this.input.addEventListener('keyup', this.searchLogic);
     document.addEventListener('keydown', this.keyPressDispatcher);
-  }
-  openOverlay = () => {
+  };
+  openOverlay = e => {
     this.ref.classList.add('search-overlay--active');
     document.body.classList.add('body-no-scroll');
     this.isOverlayOpen = true;
