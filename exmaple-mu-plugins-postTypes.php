@@ -4,6 +4,8 @@ add_action('init', 'loadUniversityPostTypes');
 function loadUniversityPostTypes(){
     // Event Post Type
     register_post_type('event', [
+        'capability_type' => 'event',
+        'map_meta_cap' => true,
         'show_in_rest' => true,
         'supports' => ['title', 'editor', 'excerpt'],
         'public' => true,
@@ -36,6 +38,8 @@ function loadUniversityPostTypes(){
 
     // Campus post type
     register_post_type('campus', [
+        'capability_type' => 'campus',
+        'map_meta_cap' => true,
         'show_in_rest' => true,
         'supports' => ['title', 'editor'],
         'public' => true,
@@ -45,7 +49,8 @@ function loadUniversityPostTypes(){
     ]);
 }
 
-function getLabels($pluralName){
+function getLabels($pluralName): array
+{
     $singularName = substr($pluralName, -2) === 'es' ? substr($pluralName, 0, -2) : substr($pluralName, 0, -1);
     return [
         'name' => $pluralName,
