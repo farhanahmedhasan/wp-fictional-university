@@ -11,7 +11,26 @@ add_action('wp_loaded', 'removeAdminBarForSubs');
 
 add_filter('body_class', 'addCustomPostTypeBodyClass');
 
-function removeAdminBarForSubs(): void{
+add_action('login_enqueue_scripts', 'loginCss');
+add_filter('login_headerurl', 'changeHeaderUrl');
+add_filter('login_headertext', 'loginTitle');
+
+function loginTitle(): ?string {
+  return get_bloginfo('name');
+}
+
+function loginCss(): void {
+  wp_enqueue_style('university_normalized_css', get_theme_file_uri( '/build/index.css' ));
+  wp_enqueue_style('university_main_css', get_theme_file_uri( '/build/style-index.css' ));
+  wp_enqueue_style('google_fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+  wp_enqueue_style('font_awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+}
+
+function changeHeaderUrl(): string {
+  return esc_url(site_url('/'));
+}
+
+function removeAdminBarForSubs(): void {
   $user = wp_get_current_user();
   if (count($user->roles) === 1 && $user->roles[0] === 'subscriber'){
     show_admin_bar(false);
