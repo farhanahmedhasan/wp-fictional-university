@@ -6,16 +6,32 @@ add_action('wp_enqueue_scripts', 'loadUniversityResources');
 add_action('after_setup_theme', 'loadUniversityFeatures');
 add_action('pre_get_posts', 'adjustQueries');
 add_action('rest_api_init', 'universityCustomRest');
+add_action('admin_init', 'redirectSubsOnLogin');
+add_action('wp_loaded', 'removeAdminBarForSubs');
 
 add_filter('body_class', 'addCustomPostTypeBodyClass');
 
-function universityCustomRest(): void
-{
-    register_rest_field('post', 'authorName', [
-        'get_callback' => function() {
-            return get_the_author();
-        }
-    ]);
+function removeAdminBarForSubs(): void{
+  $user = wp_get_current_user();
+  if (count($user->roles) === 1 && $user->roles[0] === 'subscriber'){
+    show_admin_bar(false);
+  }
+}
+
+function redirectSubsOnLogin(): void {
+  $user = wp_get_current_user();
+  if (count($user->roles) === 1 && $user->roles[0] === 'subscriber'){
+    wp_redirect(site_url('/'));
+    exit;
+  }
+}
+
+function universityCustomRest(): void {
+  register_rest_field('post', 'authorName', [
+    'get_callback' => function() {
+    return get_the_author();
+  }
+  ]);
 }
 
 function addCustomPostTypeBodyClass($classes){
