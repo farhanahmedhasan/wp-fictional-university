@@ -14,6 +14,14 @@ add_filter('body_class', 'addCustomPostTypeBodyClass');
 add_action('login_enqueue_scripts', 'loginCss');
 add_filter('login_headerurl', 'changeHeaderUrl');
 add_filter('login_headertext', 'loginTitle');
+add_filter('wp_nav_menu_items', 'filterNavMenu', 10, 2);
+
+function filterNavMenu($items, $args) {
+  if ($args->theme_location === 'header_menu' && !is_user_logged_in()){
+    $items = preg_replace('/<li[^>]*>.*?My Notes.*?<\/li>/', '', $items);
+  }
+  return $items;
+}
 
 function loginTitle(): ?string {
   return get_bloginfo('name');
