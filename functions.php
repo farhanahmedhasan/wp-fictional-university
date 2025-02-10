@@ -73,7 +73,8 @@ function addCustomPostTypeBodyClass($classes){
     return $classes;
 }
 
-function loadUniversityResources(){
+function loadUniversityResources(): void
+{
     wp_enqueue_style('university_normalized_css', get_theme_file_uri( '/build/index.css' ));
     wp_enqueue_style('university_main_css', get_theme_file_uri( '/build/style-index.css' ));
     wp_enqueue_style('google_fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
@@ -82,6 +83,11 @@ function loadUniversityResources(){
 
     wp_enqueue_script( 'main_js', get_theme_file_uri('/build/index.js'), ['jquery'], 1.0, true);
     wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', [], null, true);
+		
+		//Notebook delete
+		wp_localize_script('main_js', 'wpApiSettings', [
+			'nonce' => wp_create_nonce('wp_rest')
+		]);
 }
 
 function loadUniversityFeatures(){
