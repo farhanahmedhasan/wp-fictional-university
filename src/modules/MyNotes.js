@@ -4,6 +4,7 @@ class MyNotes{
     constructor(editId,deleteID) {
         this.editEl = document.querySelectorAll(editId)
         this.deleteEl = document.querySelectorAll(deleteID)
+        this.updateNoteEl = document.querySelectorAll('.update-note')
 
         this.events()
     }
@@ -16,20 +17,74 @@ class MyNotes{
         this.editEl.forEach((el) => {
             el.addEventListener('click', this.editNote)
         })
+
+        this.updateNoteEl.forEach(el => {
+            el.addEventListener('click', this.updateNote)
+        })
     }
 
-    editNote = async (e) => {
+    editNote = (e) => {
         const noteEl = e.target.closest('li')
         const isEditable = noteEl.getAttribute('data-state') === 'editable'
 
-        this.toggleNoteState(e,noteEl,isEditable)
+        this.toggleNoteState(noteEl,isEditable)
     }
 
-    toggleNoteState = (e,noteEl,isEditable) => {
+    updateNote = async (e) => {
+        const noteEl = e.target.closest('li')
+        const noteId = noteEl.getAttribute('data-id')
+
+        // Key name has to be exact as wp will be looking for these exact names
+        const noteData = {
+            'title': noteEl.querySelector('.note-title-field').value,
+            'content':noteEl.querySelector('.note-body-field').value
+        }
+
+        try {
+            const response  = await axios.patch(`http://fictional-university.local/wp-json/wp/v2/notebook/${noteId}`, noteData, {
+                headers : {
+                    'X-WP-Nonce': window.wpApiSettings.nonce,
+                    'Content-Type': 'Application/json'
+                }
+            })
+            this.toggleNoteState(noteEl,true)
+        } catch (e){
+            console.log(e.message)
+        }
+    }
+
+    deleteNote = async (e) => {
+        const noteEl = e.target.closest('li')
+        if (!noteEl){
+            console.error("❌ No parent <li> found!")
+            return
+        }
+
+        const noteId = noteEl.getAttribute('data-id')
+        if (!noteId) {
+            console.error(noteId)
+            return
+        }
+
+        try {
+            const response  = await axios.delete(`http://fictional-university.local/wp-json/wp/v2/notebook/${noteId}`, {
+                headers : {
+                    'X-WP-Nonce': window.wpApiSettings.nonce,
+                    'Content-Type': 'Application/json'
+                }
+            })
+
+            noteEl.remove()
+        } catch (e){
+            console.log(e.message)
+        }
+    }
+
+    toggleNoteState = (noteEl,isEditable) => {
         const title = noteEl.querySelector('.note-title-field')
         const body = noteEl.querySelector('.note-body-field')
-        const updateButton = document.querySelector('.update-note')
-        const editButton = e.target.closest('.edit-note')
+        const updateButton = noteEl.querySelector('.update-note')
+        const editButton = noteEl.querySelector('.edit-note')
 
         if (!isEditable) {
             editButton.innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Cancel`
@@ -58,33 +113,6 @@ class MyNotes{
             body.classList.remove('note-active-field')
 
             noteEl.setAttribute('data-state', ' ')
-        }
-    }
-
-    deleteNote = async (e) => {
-        const noteEl = e.target.closest('li')
-        if (!noteEl){
-            console.error("❌ No parent <li> found!")
-            return
-        }
-
-        const noteId = noteEl.getAttribute('data-id')
-        if (!noteId) {
-            console.error(noteId)
-            return
-        }
-
-        try {
-            const response  = await axios.delete(`http://fictional-university.local/wp-json/wp/v2/notebook/${noteId}`, {
-                headers : {
-                    'X-WP-Nonce': window.wpApiSettings.nonce,
-                    'Content-Type': 'Application/json'
-                }
-            })
-
-            noteEl.remove()
-        } catch (e){
-            console.log(e.message)
         }
     }
 }
