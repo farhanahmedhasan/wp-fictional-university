@@ -2189,8 +2189,9 @@ class MyNotes {
     const title = noteEl.querySelector('.note-title-field');
     const body = noteEl.querySelector('.note-body-field');
     const updateButton = document.querySelector('.update-note');
+    const editButton = e.target.closest('.edit-note');
     if (!isEditable) {
-      e.target.innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Cancel`;
+      editButton.innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Cancel`;
       updateButton.classList.add('update-note--visible');
       title.removeAttribute('readonly');
       body.removeAttribute('readonly');
@@ -2202,7 +2203,7 @@ class MyNotes {
     }
     if (isEditable) {
       updateButton.classList.remove('update-note--visible');
-      e.target.innerHTML = `<i class="fa fa-pencil" aria-hidden="true"></i> Edit`;
+      editButton.innerHTML = `<i class="fa fa-pencil" aria-hidden="true"></i> Edit`;
       title.setAttribute('readonly', 'true');
       body.setAttribute('readonly', 'true');
       title.classList.remove('note-active-field');
